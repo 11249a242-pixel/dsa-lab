@@ -1,0 +1,42 @@
+#include <stdio.h>
+#include <ctype.h>   // for isdigit()
+#include <math.h>    // for pow()
+#define MAX 100
+
+int stack[MAX];
+int top = -1;
+
+// Push to stack
+void push(int x) {
+    stack[++top] = x;
+}
+
+// Pop from stack
+int pop() {
+    return stack[top--];
+}
+
+// Evaluate postfix expression
+int evaluatePostfix(char exp[]) {
+    int i = 0;
+    char ch;
+
+    while ((ch = exp[i++]) != '\0') {
+
+        // If operand (digit), push to stack
+        if (isdigit(ch)) {
+            push(ch - '0');      // convert char digit to int
+        }
+        // Operator
+        else {
+            int val2 = pop();
+            int val1 = pop();
+
+            switch (ch) {
+                case '+': push(val1 + val2); break;
+                case '-': push(val1 - val2); break;
+                case '*': push(val1 * val2); break;
+                case '/': push(val1 / val2); break;
+                case '^': push(pow(val1, val2)); break;
+            }
+        }
